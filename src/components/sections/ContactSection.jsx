@@ -33,6 +33,16 @@ export const ContactSection = ({ onHoverCursor, onLeaveCursor }) => {
             </a>
 
             <a
+              href="tel:+917972052561"
+              onMouseEnter={() => onHoverCursor('CALL')}
+              onMouseLeave={onLeaveCursor}
+              className="btn-secondary"
+              style={{ fontSize: '16px', padding: '16px 36px' }}
+            >
+              CALL ME <Mail size={18} />
+            </a>
+
+            <a
               href="https://www.linkedin.com/in/atharva-gahine-074b0a324"
               target="_blank"
               rel="noreferrer"
@@ -54,6 +64,34 @@ export const ContactSection = ({ onHoverCursor, onLeaveCursor }) => {
               style={{ fontSize: '16px', padding: '16px 36px' }}
             >
               GITHUB <GithubIcon size={18} />
+            </a>
+          </div>
+
+          {/* Contact Details Pod */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '32px',
+              marginTop: '40px',
+              flexWrap: 'wrap',
+              fontSize: '14px',
+              fontWeight: '700',
+              color: '#111111',
+            }}
+          >
+            <a
+              href="mailto:atharvagahine11@gmail.com"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FF7A00', textDecoration: 'none' }}
+            >
+              <Mail size={16} /> atharvagahine11@gmail.com
+            </a>
+            <a
+              href="tel:+917972052561"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#111111', textDecoration: 'none' }}
+            >
+              📞 +91 79720 52561
             </a>
           </div>
         </div>

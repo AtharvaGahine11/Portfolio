@@ -91,7 +91,10 @@ export const Footer = ({ onNavigate, onHoverCursor, onLeaveCursor }) => {
                   <LinkedinIcon size={16} /> LinkedIn
                 </a>
                 <a href="mailto:atharvagahine11@gmail.com" style={linkStyle}>
-                  <Mail size={16} /> Email
+                  <Mail size={16} color="#FF7A00" /> Email: atharvagahine11@gmail.com
+                </a>
+                <a href="tel:+917972052561" style={linkStyle}>
+                  📞 Call: +91 79720 52561
                 </a>
               </div>
             </div>

@@ -205,7 +205,17 @@ export const HeroSection = ({ onNavigate, onHoverCursor, onLeaveCursor }) => {
               <a
                 href="mailto:atharvagahine11@gmail.com"
                 className="btn-icon"
+                title="Email atharvagahine11@gmail.com"
                 onMouseEnter={() => onHoverCursor('EMAIL')}
+                onMouseLeave={onLeaveCursor}
+              >
+                <Mail size={20} />
+              </a>
+              <a
+                href="tel:+917972052561"
+                className="btn-icon"
+                title="Call +91 79720 52561"
+                onMouseEnter={() => onHoverCursor('CALL')}
                 onMouseLeave={onLeaveCursor}
               >
                 <Mail size={20} />
