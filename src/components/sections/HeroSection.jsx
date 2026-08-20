@@ -222,8 +222,6 @@ export const HeroSection = ({ onNavigate, onHoverCursor, onLeaveCursor }) => {
           >
             <div
               className="glass-panel"
-              onMouseEnter={() => onHoverCursor('ATHARVA')}
-              onMouseLeave={onLeaveCursor}
               style={{
                 position: 'relative',
                 padding: '16px',
