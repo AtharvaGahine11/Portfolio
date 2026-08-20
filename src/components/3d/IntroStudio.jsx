@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-export const IntroStudio = ({ ringPosition = [3.2, 0.4, -3.5], ringScale = 0.75 }) => {
+export const IntroStudio = ({ ringPosition = [3.6, 0.2, -3.5], ringScale = 0.7 }) => {
   const ringsGroupRef = useRef();
   const ring1Ref = useRef();
   const ring2Ref = useRef();
