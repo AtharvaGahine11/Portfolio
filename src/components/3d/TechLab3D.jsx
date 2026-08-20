@@ -1,98 +1,98 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useTexture, Float } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Individual 3D Floating Tech Sticker Component
-const TechStickerNode = ({ texturePath, position, color, isHighlighted, scale = 1.2 }) => {
-  const meshRef = useRef();
-  const texture = useTexture(texturePath);
-  if (texture) {
-    texture.colorSpace = THREE.SRGBColorSpace;
-  }
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 1.5) * 0.2;
-    }
-  });
-
-  return (
-    <Float speed={2.2} rotationIntensity={1.2} floatIntensity={1.8}>
-      <group position={position} scale={scale}>
-        {/* Soft Backlight Glow Aura */}
-        <mesh position={[0, 0, -0.05]}>
-          <circleGeometry args={[0.7, 32]} />
-          <meshBasicMaterial color={color} transparent opacity={isHighlighted ? 0.3 : 0.08} />
-        </mesh>
-
-        {/* 3D Floating Cutout Sticker Plane */}
-        <mesh ref={meshRef} position={[0, 0, 0]}>
-          <planeGeometry args={[1.2, 1.2]} />
-          <meshStandardMaterial
-            map={texture}
-            transparent={true}
-            roughness={0.2}
-            metalness={0.0}
-            side={THREE.DoubleSide}
-            alphaTest={0.01}
-          />
-        </mesh>
-      </group>
-    </Float>
-  );
-};
-
-export const TechLab3D = ({ activeCategory = 'ALL', position = [0, 0, -3] }) => {
+export const TechLab3D = ({ activeCategory = 'ALL', position = [0, 0, -4.5] }) => {
   const groupRef = useRef();
+  const sphereRef = useRef();
+  const ringRef = useRef();
 
   useFrame((state) => {
+    const t = state.clock.getElapsedTime();
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.12;
+      groupRef.current.rotation.y = t * 0.12;
+    }
+    if (sphereRef.current) {
+      sphereRef.current.rotation.x = t * 0.2;
+      sphereRef.current.rotation.z = t * 0.15;
+    }
+    if (ringRef.current) {
+      ringRef.current.rotation.z = -t * 0.25;
     }
   });
 
-  const techStickers = [
-    { name: 'Python', path: '/assets/tech/python.png', pos: [-3.8, 2.2, -0.5], color: '#3776AB', group: 'LANGUAGES' },
-    { name: 'JavaScript', path: '/assets/tech/javascript.png', pos: [-1.4, 2.8, -1.0], color: '#F7DF1E', group: 'LANGUAGES' },
-    { name: 'HTML5', path: '/assets/tech/html.png', pos: [1.4, 2.8, -1.0], color: '#E34F26', group: 'FRONTEND' },
-    { name: 'CSS3', path: '/assets/tech/css.png', pos: [3.8, 2.2, -0.5], color: '#1572B6', group: 'FRONTEND' },
-    { name: 'Python DB', path: '/assets/tech/python.png', pos: [-3.2, -1.4, -0.5], color: '#FF7A00', group: 'BACKEND' },
-    { name: 'JavaScript React', path: '/assets/tech/javascript.png', pos: [3.2, -1.4, -0.5], color: '#61DAFB', group: 'FRONTEND' },
+  const nodes = [
+    { pos: [-3.8, 2.0, -1], color: '#FF7A00', group: 'LANGUAGES' },
+    { pos: [-1.8, 2.8, -1.5], color: '#61DAFB', group: 'FRONTEND' },
+    { pos: [1.8, 2.8, -1.5], color: '#68A063', group: 'BACKEND' },
+    { pos: [3.8, 2.0, -1], color: '#47A248', group: 'DATABASE' },
+    { pos: [-3.2, -1.8, -1], color: '#2496ED', group: 'DEVOPS' },
+    { pos: [3.2, -1.8, -1], color: '#9C27B0', group: 'SYSTEM DESIGN' },
   ];
 
   return (
     <group ref={groupRef} position={position}>
-      {/* Central Engineering Core Sphere */}
-      <mesh position={[0, 0, -1]}>
-        <sphereGeometry args={[0.45, 32, 32]} />
+      {/* Central Holographic Geodesic Sphere */}
+      <mesh ref={sphereRef} position={[0, 0, 0]}>
+        <icosahedronGeometry args={[1.4, 1]} />
         <meshStandardMaterial
           color="#FF7A00"
-          roughness={0.2}
+          roughness={0.1}
+          metalness={0.9}
+          wireframe
           emissive="#FF7A00"
-          emissiveIntensity={0.6}
-          transparent
-          opacity={0.7}
+          emissiveIntensity={0.4}
         />
       </mesh>
 
-      {/* Ambient Orbit Ring */}
-      <mesh rotation={[Math.PI / 3, 0, 0]} position={[0, 0, -1]}>
-        <ringGeometry args={[3.6, 3.65, 64]} />
-        <meshBasicMaterial color="#FF7A00" side={THREE.DoubleSide} transparent opacity={0.25} />
+      {/* Inner Glowing Core */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshStandardMaterial
+          color="#FF7A00"
+          emissive="#FF7A00"
+          emissiveIntensity={0.8}
+          transparent
+          opacity={0.6}
+        />
       </mesh>
 
-      {/* Render 3D Tech Sticker Nodes */}
-      {techStickers.map((tech) => {
-        const isHighlighted = activeCategory === 'ALL' || activeCategory === tech.group;
+      {/* Counter-Rotating Orbital Ring */}
+      <mesh ref={ringRef} rotation={[Math.PI / 3, 0, 0]}>
+        <torusGeometry args={[3.2, 0.03, 16, 80]} />
+        <meshBasicMaterial color="#FF7A00" transparent opacity={0.4} />
+      </mesh>
+
+      {/* Orbiting Telemetry Nodes & Rays */}
+      {nodes.map((node, i) => {
+        const isHighlighted = activeCategory === 'ALL' || activeCategory === node.group;
         return (
-          <TechStickerNode
-            key={tech.name}
-            texturePath={tech.path}
-            position={tech.pos}
-            color={tech.color}
-            isHighlighted={isHighlighted}
-          />
+          <Float key={i} speed={2} rotationIntensity={1} floatIntensity={1.5}>
+            <group position={node.pos}>
+              {/* Glowing Node Sphere */}
+              <mesh castShadow>
+                <sphereGeometry args={[isHighlighted ? 0.22 : 0.14, 24, 24]} />
+                <meshStandardMaterial
+                  color={node.color}
+                  roughness={0.2}
+                  metalness={0.5}
+                  emissive={node.color}
+                  emissiveIntensity={isHighlighted ? 0.6 : 0.15}
+                  transparent
+                  opacity={isHighlighted ? 0.85 : 0.3}
+                />
+              </mesh>
+
+              {/* Halo Ring around Node */}
+              {isHighlighted && (
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                  <torusGeometry args={[0.35, 0.015, 12, 32]} />
+                  <meshBasicMaterial color={node.color} transparent opacity={0.6} />
+                </mesh>
+              )}
+            </group>
+          </Float>
         );
       })}
     </group>
