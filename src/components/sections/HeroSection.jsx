@@ -29,7 +29,7 @@ export const HeroSection = ({ onNavigate, onHoverCursor, onLeaveCursor }) => {
           }}
         >
           {/* Left Column: Text & CTAs */}
-          <div style={{ textAlign: 'left' }}>
+          <div style={{ textAlign: 'left', maxWidth: '540px' }}>
             {/* Status Badges */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}

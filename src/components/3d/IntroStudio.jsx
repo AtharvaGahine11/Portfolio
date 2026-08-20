@@ -67,7 +67,7 @@ export const IntroStudio = ({ ringPosition = [0, 0, -4.5], ringScale = 0.9 }) =>
 
 
       {/* 4. Large 3D Curved Ultrawide Workstation Monitor */}
-      <group position={[2.4, 0.4, -2.4]}>
+      <group position={[3.5, 0.4, -2.5]}>
         {/* Monitor Screen Frame */}
         <mesh castShadow position={[0, 0, 0]}>
           <boxGeometry args={[3.8, 1.9, 0.08]} />
@@ -139,8 +139,8 @@ export const IntroStudio = ({ ringPosition = [0, 0, -4.5], ringScale = 0.9 }) =>
         </group>
       </Float>
 
-      {/* 7. Atharva 3D Hero Avatar (Slightly Right of Center) */}
-      <AtharvaAvatar3D position={[2.4, -0.1, -1.0]} scale={1.15} isIntro={true} />
+      {/* 7. Atharva 3D Hero Avatar (Shifted Right for Text Clearance) */}
+      <AtharvaAvatar3D position={[3.5, 0.0, -1.5]} scale={1.0} isIntro={true} />
 
       {/* 8. Studio Directional & Ambient Lighting with Shadows */}
       <directionalLight
