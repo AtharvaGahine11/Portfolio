@@ -103,6 +103,9 @@ export const IntroStudio = ({ ringPosition = [0, 0.5, -3], ringScale = 1 }) => {
         </mesh>
       </Float>
 
+      {/* Atharva 3D Hero Studio Avatar */}
+      <AtharvaAvatar3D position={[2.6, 0.1, -1.2]} scale={1.1} isIntro={true} />
+
       {/* Swirling Volumetric Particle Cloud */}
       <points ref={particlesRef}>
         <bufferGeometry>
