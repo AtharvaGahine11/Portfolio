@@ -64,23 +64,7 @@ export const IntroStudio = ({ ringPosition = [0, 0, -4.5], ringScale = 0.9 }) =>
         </mesh>
       </group>
 
-      {/* 3. 3D Developer Workstation Desk (Right of Center) */}
-      <group position={[2.4, -1.4, -1.8]}>
-        {/* Developer Desk Surface */}
-        <mesh castShadow receiveShadow position={[0, 0, 0]}>
-          <boxGeometry args={[4.8, 0.12, 2.2]} />
-          <meshStandardMaterial color="#FFFFFF" roughness={0.15} metalness={0.2} />
-        </mesh>
-        {/* Desk Metallic Legs */}
-        <mesh position={[-2.2, -0.5, 0]}>
-          <boxGeometry args={[0.1, 1.0, 2.0]} />
-          <meshStandardMaterial color="#111111" roughness={0.3} />
-        </mesh>
-        <mesh position={[2.2, -0.5, 0]}>
-          <boxGeometry args={[0.1, 1.0, 2.0]} />
-          <meshStandardMaterial color="#111111" roughness={0.3} />
-        </mesh>
-      </group>
+
 
       {/* 4. Large 3D Curved Ultrawide Workstation Monitor */}
       <group position={[2.4, 0.4, -2.4]}>
