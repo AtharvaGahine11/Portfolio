@@ -1,159 +1,108 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float, Text } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
-import { AtharvaAvatar3D } from './AtharvaAvatar3D';
 
-export const IntroStudio = ({ ringPosition = [0, 0, -4.5], ringScale = 0.9 }) => {
+export const IntroStudio = ({ ringPosition = [3.2, 0.4, -3.5], ringScale = 0.75 }) => {
   const ringsGroupRef = useRef();
   const ring1Ref = useRef();
   const ring2Ref = useRef();
-  const serverLedsRef = useRef();
+  const ring3Ref = useRef();
   const particlesRef = useRef();
 
   // Floating particles geometry
-  const particleCount = 180;
+  const particleCount = 200;
   const positions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 20;
-    positions[i + 1] = Math.random() * 10 - 2;
-    positions[i + 2] = (Math.random() - 0.5) * 20;
+    positions[i] = (Math.random() - 0.5) * 18;
+    positions[i + 1] = Math.random() * 10 - 3;
+    positions[i + 2] = (Math.random() - 0.5) * 18;
   }
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
-    if (ring1Ref.current) ring1Ref.current.rotation.x = t * 0.15;
-    if (ring2Ref.current) ring2Ref.current.rotation.y = t * 0.2;
+    if (ring1Ref.current) ring1Ref.current.rotation.x = t * 0.3;
+    if (ring2Ref.current) ring2Ref.current.rotation.y = t * 0.4;
+    if (ring3Ref.current) ring3Ref.current.rotation.z = t * 0.25;
 
     if (ringsGroupRef.current) {
-      ringsGroupRef.current.rotation.y = t * 0.04;
+      ringsGroupRef.current.rotation.y = t * 0.08;
     }
 
     if (particlesRef.current) {
-      particlesRef.current.rotation.y = t * 0.03;
+      particlesRef.current.rotation.y = t * 0.05;
     }
   });
 
   return (
     <group position={[0, 0, 0]}>
-      {/* 1. Studio Architectural Floor with Realistic Shadows */}
+      {/* Studio Architectural Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.5, 0]} receiveShadow>
-        <planeGeometry args={[80, 80]} />
-        <meshStandardMaterial color="#F4F4F0" roughness={0.2} metalness={0.1} />
+        <planeGeometry args={[70, 70]} />
+        <meshStandardMaterial color="#F0F0EC" roughness={0.3} metalness={0.1} />
       </mesh>
 
-      {/* Architectural Studio Grid Overlay */}
-      <gridHelper args={[80, 60, '#FF7A00', '#E2E2DC']} position={[0, -2.48, 0]} />
+      {/* Grid helper overlay */}
+      <gridHelper args={[70, 50, '#FF7A00', '#D9D9D4']} position={[0, -2.48, 0]} />
 
-      {/* 2. Background Thin Architectural Light Rings (Deep Z-Space) */}
+      {/* Futuristic Gyroscopic Tech Rings Matrix Backdrop */}
       <group ref={ringsGroupRef} position={ringPosition} scale={ringScale}>
+        {/* Outer Ring */}
         <mesh ref={ring1Ref}>
-          <torusGeometry args={[4.8, 0.015, 16, 100]} />
+          <torusGeometry args={[4.2, 0.04, 16, 100]} />
           <meshStandardMaterial
             color="#FF7A00"
-            emissive="#FF7A00"
-            emissiveIntensity={0.5}
-            transparent
-            opacity={0.4}
-          />
-        </mesh>
-        <mesh ref={ring2Ref}>
-          <torusGeometry args={[3.8, 0.012, 16, 100]} />
-          <meshBasicMaterial color="#111111" transparent opacity={0.3} />
-        </mesh>
-      </group>
-
-
-
-      {/* 4. Large 3D Curved Ultrawide Workstation Monitor */}
-      <group position={[3.5, 0.4, -2.5]}>
-        {/* Monitor Screen Frame */}
-        <mesh castShadow position={[0, 0, 0]}>
-          <boxGeometry args={[3.8, 1.9, 0.08]} />
-          <meshStandardMaterial color="#111111" roughness={0.2} metalness={0.8} />
-        </mesh>
-        {/* Monitor Display Surface (System Architecture Code Display) */}
-        <mesh position={[0, 0, 0.045]}>
-          <planeGeometry args={[3.68, 1.78]} />
-          <meshStandardMaterial
-            color="#0D1117"
-            emissive="#161B22"
-            emissiveIntensity={0.8}
             roughness={0.1}
+            metalness={0.8}
+            emissive="#FF7A00"
+            emissiveIntensity={0.6}
           />
         </mesh>
-        {/* Monitor Stand Base */}
-        <mesh position={[0, -1.1, 0.1]}>
-          <cylinderGeometry args={[0.1, 0.15, 0.6, 16]} />
-          <meshStandardMaterial color="#111111" metalness={0.8} />
+
+        {/* Middle Ring */}
+        <mesh ref={ring2Ref}>
+          <torusGeometry args={[3.4, 0.03, 16, 100]} />
+          <meshStandardMaterial color="#111111" roughness={0.2} metalness={0.9} />
+        </mesh>
+
+        {/* Inner Ring */}
+        <mesh ref={ring3Ref}>
+          <torusGeometry args={[2.6, 0.02, 16, 100]} />
+          <meshBasicMaterial color="#FF7A00" transparent opacity={0.6} />
         </mesh>
       </group>
 
-      {/* 5. Server & Network Rack Tower (Far Right) */}
-      <group position={[5.4, -0.2, -2.2]}>
-        {/* Server Cabinet Body */}
-        <mesh castShadow receiveShadow position={[0, 0, 0]}>
-          <boxGeometry args={[1.2, 4.2, 1.4]} />
-          <meshStandardMaterial color="#1A1A1A" roughness={0.3} metalness={0.7} />
+      {/* Floating 3D Geometric Polyhedron Orbs */}
+      <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
+        <mesh position={[-4.5, 2, -2]}>
+          <octahedronGeometry args={[0.6, 0]} />
+          <meshStandardMaterial color="#FF7A00" roughness={0.1} metalness={0.6} wireframe />
         </mesh>
-
-        {/* Stacked Blade Unit Lines with Status LEDs */}
-        {[-1.6, -1.0, -0.4, 0.2, 0.8, 1.4].map((y, idx) => (
-          <group key={idx} position={[0, y, 0.71]}>
-            {/* Blade Unit Plate */}
-            <mesh>
-              <planeGeometry args={[1.1, 0.4]} />
-              <meshStandardMaterial color="#262626" roughness={0.2} />
-            </mesh>
-            {/* Blinking Green LED */}
-            <mesh position={[-0.4, 0, 0.01]}>
-              <sphereGeometry args={[0.04, 12, 12]} />
-              <meshBasicMaterial color="#00FF66" />
-            </mesh>
-            {/* Blinking Orange LED */}
-            <mesh position={[-0.25, 0, 0.01]}>
-              <sphereGeometry args={[0.04, 12, 12]} />
-              <meshBasicMaterial color="#FF7A00" />
-            </mesh>
-          </group>
-        ))}
-      </group>
-
-      {/* 6. Floating Cloud & Telemetry Network Nodes */}
-      <Float speed={2} rotationIntensity={0.8} floatIntensity={1.4}>
-        <group position={[-3.8, 1.8, -2]}>
-          <mesh castShadow>
-            <sphereGeometry args={[0.3, 24, 24]} />
-            <meshStandardMaterial color="#2496ED" emissive="#2496ED" emissiveIntensity={0.6} />
-          </mesh>
-        </group>
       </Float>
 
-      <Float speed={2.5} rotationIntensity={1} floatIntensity={1.8}>
-        <group position={[-4.5, -0.6, -1.8]}>
-          <mesh castShadow>
-            <octahedronGeometry args={[0.4, 0]} />
-            <meshStandardMaterial color="#FF7A00" wireframe />
-          </mesh>
-        </group>
+      <Float speed={1.8} rotationIntensity={2} floatIntensity={1.8}>
+        <mesh position={[4.5, 2.5, -2.5]}>
+          <icosahedronGeometry args={[0.7, 0]} />
+          <meshStandardMaterial color="#111111" roughness={0.2} metalness={0.8} wireframe />
+        </mesh>
       </Float>
 
-      {/* 7. Atharva 3D Hero Avatar (Shifted Right for Text Clearance) */}
-      <AtharvaAvatar3D position={[3.5, 0.0, -1.5]} scale={1.0} isIntro={true} />
+      <Float speed={2.4} rotationIntensity={1.2} floatIntensity={2.2}>
+        <mesh position={[-3.8, -1, -1.5]}>
+          <dodecahedronGeometry args={[0.5, 0]} />
+          <meshStandardMaterial color="#FF7A00" roughness={0.2} emissive="#FF7A00" emissiveIntensity={0.4} />
+        </mesh>
+      </Float>
 
-      {/* 8. Studio Directional & Ambient Lighting with Shadows */}
-      <directionalLight
-        position={[4, 6, 4]}
-        intensity={2.2}
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-      />
-      <ambientLight intensity={0.7} />
-      <pointLight position={[2.4, 1.5, -1.0]} intensity={1.5} color="#FF7A00" />
+      <Float speed={2.1} rotationIntensity={1.8} floatIntensity={1.6}>
+        <mesh position={[3.8, -1.2, -1.8]}>
+          <tetrahedronGeometry args={[0.6, 0]} />
+          <meshStandardMaterial color="#2496ED" roughness={0.1} metalness={0.5} wireframe />
+        </mesh>
+      </Float>
 
-      {/* Swirling Volumetric Particle Field */}
+      {/* Swirling Volumetric Particle Cloud */}
       <points ref={particlesRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -163,7 +112,7 @@ export const IntroStudio = ({ ringPosition = [0, 0, -4.5], ringScale = 0.9 }) =>
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.05} color="#FF7A00" transparent opacity={0.6} sizeAttenuation />
+        <pointsMaterial size={0.06} color="#FF7A00" transparent opacity={0.7} sizeAttenuation />
       </points>
     </group>
   );
