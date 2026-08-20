@@ -1,39 +1,95 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useTexture, Float } from '@react-three/drei';
 import * as THREE from 'three';
+
+// Individual 3D Floating Tech Logo Badge Component
+const TechLogoNode = ({ texturePath, position, color, isHighlighted }) => {
+  const meshRef = useRef();
+  const texture = useTexture(texturePath);
+  if (texture) {
+    texture.colorSpace = THREE.SRGBColorSpace;
+  }
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 1.5) * 0.2;
+    }
+  });
+
+  return (
+    <Float speed={2} rotationIntensity={0.8} floatIntensity={1.5}>
+      <group position={position}>
+        {/* Connection Beam Line to Center */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[0.08, 16, 16]} />
+          <meshBasicMaterial color={color} transparent opacity={isHighlighted ? 0.6 : 0.2} />
+        </mesh>
+
+        {/* Outer 3D Badge Disc Backdrop */}
+        <mesh position={[0, 0, -0.05]}>
+          <cylinderGeometry args={[0.65, 0.65, 0.08, 32]} rotation={[Math.PI / 2, 0, 0]} />
+          <meshStandardMaterial
+            color="#FFFFFF"
+            roughness={0.1}
+            metalness={0.2}
+            emissive={color}
+            emissiveIntensity={isHighlighted ? 0.3 : 0.05}
+            transparent
+            opacity={isHighlighted ? 0.95 : 0.4}
+          />
+        </mesh>
+
+        {/* 3D Rim Frame */}
+        <mesh position={[0, 0, -0.01]}>
+          <torusGeometry args={[0.66, 0.03, 16, 32]} />
+          <meshStandardMaterial color={color} roughness={0.2} metalness={0.8} />
+        </mesh>
+
+        {/* Mapped 3D Tech Logo Plane */}
+        <mesh ref={meshRef} position={[0, 0, 0.02]}>
+          <planeGeometry args={[0.9, 0.9]} />
+          <meshStandardMaterial
+            map={texture}
+            transparent={true}
+            roughness={0.1}
+            metalness={0.0}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      </group>
+    </Float>
+  );
+};
 
 export const TechLab3D = ({ activeCategory = 'ALL', position = [0, 0, -3] }) => {
   const groupRef = useRef();
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.15;
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.12;
     }
   });
 
-  const nodes = [
-    { name: 'Python', pos: [-4, 2, -1], color: '#3776AB', group: 'LANGUAGES' },
-    { name: 'React', pos: [-2.2, 3, -0.5], color: '#61DAFB', group: 'FRONTEND' },
-    { name: 'Node.js', pos: [0, 3.2, -1], color: '#68A063', group: 'BACKEND' },
-    { name: 'MongoDB', pos: [2.2, 3, -1.5], color: '#47A248', group: 'DATABASE' },
-    { name: 'Docker', pos: [4, 2, -1], color: '#2496ED', group: 'DEVOPS' },
-    { name: 'AWS', pos: [-3, -0.5, 0], color: '#FF9900', group: 'CLOUD' },
-    { name: 'Socket.IO', pos: [0, -0.2, 0.5], color: '#FF7A00', group: 'REAL-TIME' },
-    { name: 'Kubernetes', pos: [3, -0.5, 0], color: '#326CE5', group: 'DEVOPS' },
-    { name: 'Machine Learning', pos: [-1.8, -2.5, -1], color: '#E91E63', group: 'AI / ML' },
-    { name: 'System Design', pos: [1.8, -2.5, -1], color: '#9C27B0', group: 'SYSTEM DESIGN' },
+  const techLogos = [
+    { name: 'Python', path: '/assets/tech/python.png', pos: [-3.6, 2.2, -0.5], color: '#3776AB', group: 'LANGUAGES' },
+    { name: 'JavaScript', path: '/assets/tech/javascript.png', pos: [-1.4, 2.8, -1.0], color: '#F7DF1E', group: 'LANGUAGES' },
+    { name: 'HTML5', path: '/assets/tech/html.png', pos: [1.4, 2.8, -1.0], color: '#E34F26', group: 'FRONTEND' },
+    { name: 'CSS3', path: '/assets/tech/css.png', pos: [3.6, 2.2, -0.5], color: '#1572B6', group: 'FRONTEND' },
+    { name: 'React', path: '/assets/tech/javascript.png', pos: [-3.2, -1.4, -0.5], color: '#61DAFB', group: 'FRONTEND' },
+    { name: 'Python DB', path: '/assets/tech/python.png', pos: [3.2, -1.4, -0.5], color: '#FF7A00', group: 'BACKEND' },
   ];
 
   return (
     <group ref={groupRef} position={position}>
       {/* Central Engineering Core Sphere */}
       <mesh position={[0, 0, -1]}>
-        <sphereGeometry args={[0.4, 32, 32]} />
+        <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial
           color="#FF7A00"
           roughness={0.2}
           emissive="#FF7A00"
-          emissiveIntensity={0.5}
+          emissiveIntensity={0.6}
           transparent
           opacity={0.7}
         />
@@ -41,41 +97,21 @@ export const TechLab3D = ({ activeCategory = 'ALL', position = [0, 0, -3] }) => 
 
       {/* Ambient Orbit Ring */}
       <mesh rotation={[Math.PI / 3, 0, 0]} position={[0, 0, -1]}>
-        <ringGeometry args={[3.2, 3.24, 64]} />
+        <ringGeometry args={[3.6, 3.65, 64]} />
         <meshBasicMaterial color="#FF7A00" side={THREE.DoubleSide} transparent opacity={0.25} />
       </mesh>
 
-      {/* Nodes & Lines */}
-      {nodes.map((node) => {
-        const isHighlighted = activeCategory === 'ALL' || activeCategory === node.group;
-
-        const points = [new THREE.Vector3(0, 0, -1), new THREE.Vector3(...node.pos)];
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
-
+      {/* Render 3D Tech Logo Nodes */}
+      {techLogos.map((tech) => {
+        const isHighlighted = activeCategory === 'ALL' || activeCategory === tech.group;
         return (
-          <group key={node.name}>
-            {/* Energy Connection Line */}
-            <primitive object={new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({
-              color: isHighlighted ? '#FF7A00' : '#D9D9D4',
-              linewidth: isHighlighted ? 2 : 1,
-              transparent: true,
-              opacity: isHighlighted ? 0.5 : 0.15,
-            }))} />
-
-            {/* Node Mesh */}
-            <mesh position={node.pos}>
-              <sphereGeometry args={[isHighlighted ? 0.22 : 0.14, 24, 24]} />
-              <meshStandardMaterial
-                color={node.color}
-                roughness={0.3}
-                metalness={0.2}
-                emissive={node.color}
-                emissiveIntensity={isHighlighted ? 0.5 : 0.1}
-                transparent
-                opacity={isHighlighted ? 0.85 : 0.35}
-              />
-            </mesh>
-          </group>
+          <TechLogoNode
+            key={tech.name}
+            texturePath={tech.path}
+            position={tech.pos}
+            color={tech.color}
+            isHighlighted={isHighlighted}
+          />
         );
       })}
     </group>

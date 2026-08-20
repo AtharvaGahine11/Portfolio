@@ -172,8 +172,19 @@ export const TechLabSection = ({ activeCategory, onCategoryChange, onHoverCursor
                         }}
                       >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14px', fontWeight: '800', color: '#111111' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <Icon size={16} color="#FF7A00" />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            {item.name.includes('Python') ? (
+                              <img src="/assets/tech/python.png" alt="Python" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                            ) : item.name.includes('JavaScript') ? (
+                              <img src="/assets/tech/javascript.png" alt="JavaScript" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                            ) : item.name.includes('HTML') || item.name.includes('CSS') ? (
+                              <div style={{ display: 'flex', gap: '4px' }}>
+                                <img src="/assets/tech/html.png" alt="HTML5" style={{ width: '18px', height: '18px', objectFit: 'contain' }} />
+                                <img src="/assets/tech/css.png" alt="CSS3" style={{ width: '18px', height: '18px', objectFit: 'contain' }} />
+                              </div>
+                            ) : (
+                              <Icon size={16} color="#FF7A00" />
+                            )}
                             <span>{item.name}</span>
                           </div>
                           <span style={{ color: '#FF7A00', fontSize: '12px', fontFamily: 'Outfit, sans-serif' }}>
